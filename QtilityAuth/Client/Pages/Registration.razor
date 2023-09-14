@@ -6,46 +6,35 @@
 @inject IHttpClientFactory ClientFactory
 @using System.Text.Json;
 @inject NavigationManager nav
+@inject NotificationService notificationService
 @attribute [AllowAnonymous]
 
 <h3>Registration Form</h3>
 
-<div class="form">
-    <label for="firstName">First Name:</label>
-    <input type="text" id="firstName" @bind="user.DisplayName" />
-
-    <label for="email">Email:</label>
-    <input type="email" id="email" @bind="user.EmailAddress" />
-
-    <label for="password">Password:</label>
-    <input type="password" id="password" @bind="user.Password" />
-
-    <button @onclick="Register">Register</button>
-</div>
-
-@if (errorMessage != null)
-{
-    @foreach (var err in errorMessage)
-    {
-        <p>@err.description</p>
-    }
-
-}
+<RadzenCard class="rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12" style="max-width: 600px;">
+    <RadzenTemplateForm Data=@("LoginWithDefaultValues")>
+        <RadzenLogin AllowRegister="false" AllowResetPassword="false" Username=@userName UserText="Email" Password=@password
+                     Login=@(args => Register(args, "Login with default values")) LoginText="Register" />
+    </RadzenTemplateForm>
+</RadzenCard>
 
 @code {
+    string userName = "";
+    string password = "";
+
     private RegisterRequest user = new RegisterRequest();
     private bool registrationSuccessful = false;
     public IEnumerable<IdentityDescriptions> errorMessage { get; set; }
     public record RegistrationResponse(bool succeeded, IEnumerable<IdentityDescriptions> errors);
     public record IdentityDescriptions(string code, string description);
-    async Task Register()
+    async Task Register(LoginArgs args, string name)
     {
         var client = ClientFactory.CreateClient();
         var values = new Dictionary<string, string>
           {
-              { "EmailAddress", user.EmailAddress },
-              { "Password", user.Password },
-              {"DisplayName", user.DisplayName}
+              { "EmailAddress", args.Username },
+              { "Password", args.Password },
+              {"DisplayName", args.Username.Split("@")[0]}
           };
         var content = new FormUrlEncodedContent(values);
 
@@ -71,7 +60,10 @@
             }
             else
             {
-                errorMessage = res.errors;
+                foreach(var err in res.errors)
+                {
+                    notificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = err.code, Detail = err.description, Duration = 5000 });
+                }
             }
         }
         else

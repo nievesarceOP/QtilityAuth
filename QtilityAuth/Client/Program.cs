@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Components.Authorization;
+using Radzen;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -28,7 +29,7 @@ builder.Services.AddScoped(provider => new JwtTokenMessageHandler(appUri, provid
 builder.Services.AddHttpClient("QtilityAuth.Server", client => client.BaseAddress = appUri)
     .AddHttpMessageHandler<JwtTokenMessageHandler>();
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("QtilityAuth.Server"));
-
+builder.Services.AddRadzenComponents();
 var application = builder.Build();
 await RefreshJwtToken(application);
 

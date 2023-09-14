@@ -8,21 +8,14 @@
 @inject NavigationManager nav
 @attribute [AllowAnonymous]
 
-<div class="text-center">
-    <div class="form-group">
-        <label for="Email">Email</label>
-        <InputText class="form-control" id="Email" aria-describedby="emailHelp" placeholder="Email" @bind-Value=Email />
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <InputText type="password" class="form-control" id="password" placeholder="Password" @bind-Value=Password />
-    </div>
-    <div class="form-group">
-        <button @onclick="Authenticate" id="login" name="login" class="btn btn-primary">Login</button>
-    </div>
-    <p>or</p>
-    <a href="/registration">Register</a>
-</div>
+<RadzenCard class="rz-my-12 rz-mx-auto rz-p-4 rz-p-md-12" style="max-width: 600px;">
+    <RadzenTemplateForm Data=@("LoginWithDefaultValues")>
+        <RadzenLogin AllowRegister="true" AllowResetPassword="false" Username=@Email Password=@Password
+                     AllowRememberMe="false"
+                     Login=@(args => Authenticate(args, "Login with default values"))
+                     Register=@(args => OnRegister("Login with default values")) />
+    </RadzenTemplateForm>
+</RadzenCard>
 
 @code {
     public string Email { get; set; }
@@ -41,14 +34,17 @@
 
         base.OnInitialized();
     }
-
-    async Task Authenticate()
+    void OnRegister(string name)
+    {
+        nav.NavigateTo("/registration");
+    }
+    async Task Authenticate(LoginArgs args, string name)
     {
         var client = ClientFactory.CreateClient();
         var values = new Dictionary<string, string>
           {
-              { "Email", Email },
-              { "Password", Password }
+              { "Email", args.Username },
+              { "Password", args.Password }
           };
         var content = new FormUrlEncodedContent(values);
 
