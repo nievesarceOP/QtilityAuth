@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QtilityAuth.Server", "QtilityAuth\Server\QtilityAuth.Server.csproj", "{5EFC5A89-C8D8-4CE8-BBDD-BAFB1F01D0BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QtilityAuth.Client", "QtilityAuth\Client\QtilityAuth.Client.csproj", "{F07BE132-361A-428A-9C02-133D00D6533B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QtilityAuth.Shared", "QtilityAuth\Shared\QtilityAuth.Shared.csproj", "{E84E9E29-78D8-4100-87E1-AD005AC39F3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5EFC5A89-C8D8-4CE8-BBDD-BAFB1F01D0BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EFC5A89-C8D8-4CE8-BBDD-BAFB1F01D0BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EFC5A89-C8D8-4CE8-BBDD-BAFB1F01D0BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EFC5A89-C8D8-4CE8-BBDD-BAFB1F01D0BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F07BE132-361A-428A-9C02-133D00D6533B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F07BE132-361A-428A-9C02-133D00D6533B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F07BE132-361A-428A-9C02-133D00D6533B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F07BE132-361A-428A-9C02-133D00D6533B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E84E9E29-78D8-4100-87E1-AD005AC39F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E84E9E29-78D8-4100-87E1-AD005AC39F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E84E9E29-78D8-4100-87E1-AD005AC39F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E84E9E29-78D8-4100-87E1-AD005AC39F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69CBAF33-326D-4CBC-B210-E84D4A5892D8}
+	EndGlobalSection
+EndGlobal

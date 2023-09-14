@@ -1,0 +1,84 @@
+﻿@layout LoginLayout
+@page "/registration"
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Identity;
+@using QtilityAuth.Shared;
+@inject IHttpClientFactory ClientFactory
+@using System.Text.Json;
+@inject NavigationManager nav
+@attribute [AllowAnonymous]
+
+<h3>Registration Form</h3>
+
+<div class="form">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" @bind="user.DisplayName" />
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" @bind="user.EmailAddress" />
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" @bind="user.Password" />
+
+    <button @onclick="Register">Register</button>
+</div>
+
+@if (errorMessage != null)
+{
+    @foreach (var err in errorMessage)
+    {
+        <p>@err.description</p>
+    }
+
+}
+
+@code {
+    private RegisterRequest user = new RegisterRequest();
+    private bool registrationSuccessful = false;
+    public IEnumerable<IdentityDescriptions> errorMessage { get; set; }
+    public record RegistrationResponse(bool succeeded, IEnumerable<IdentityDescriptions> errors);
+    public record IdentityDescriptions(string code, string description);
+    async Task Register()
+    {
+        var client = ClientFactory.CreateClient();
+        var values = new Dictionary<string, string>
+          {
+              { "EmailAddress", user.EmailAddress },
+              { "Password", user.Password },
+              {"DisplayName", user.DisplayName}
+          };
+        var content = new FormUrlEncodedContent(values);
+
+        var response = await client.PostAsync("https://localhost:7235/register", content);
+
+        var responseString = await response.Content.ReadAsStringAsync();
+
+        if (responseString == string.Empty)
+        {
+            Console.WriteLine("Empty response");
+            return;
+        }
+
+        Console.WriteLine(responseString);
+
+        var res = JsonSerializer.Deserialize<RegistrationResponse>(responseString);
+
+        if (res != null)
+        {
+            if (res.succeeded)
+            {
+                nav.NavigateTo("/log_in");
+            }
+            else
+            {
+                errorMessage = res.errors;
+            }
+        }
+        else
+        {
+            Console.WriteLine("Deserilize fallo");
+        }
+
+        StateHasChanged();
+    }
+}
